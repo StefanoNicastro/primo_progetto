@@ -1,6 +1,9 @@
 from django.shortcuts import render
 
 # Create your views here.
+def index(request):
+    return render(request, "prima_app/index.html")
+
 def homepage(request):
     return render(request, "prima_app/homepage.html")
 
@@ -9,3 +12,12 @@ def welcome(request):
 
 def lista(request):
     return render(request, "prima_app/lista.html")
+
+def variabili(request):
+    context={
+        'var1': 'Prima variabile',
+        'var2': 'Seconda variabile',
+        'var3': 'Terza variabile',
+    }
+
+    return render(request, "prima_app/variabili.html", context)
