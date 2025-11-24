@@ -1,0 +1,26 @@
+{% extends "base.html"%}
+{%block title%} {{block.super}} | Differenza {% endblock title%}
+{%block content%}
+
+    <h1>Differenza</h1>
+    {%if var1 > var2%}
+    <p style="color: red; display: inline;">{{var1}}</p>
+    {% elif var2 > var1 %}
+    <p style="color: green; display: inline;">{{var1}}</p>
+    {% else %}
+    <p>{{var1}}</p>
+    {% endif %}
+
+    <p style="display: inline;">-</p>
+
+    {%if var1 > var2%}
+    <p style="color: green; display: inline;">{{var2}}</p>
+    {% elif var2 > var1 %}
+    <p style="color: red; display: inline;">{{var2}}</p>
+    {% else %}
+    <p>{{var2}}</p>
+    {% endif %}
+
+    <p style="display: inline;">={{var3}}</p>
+    
+{%endblock content%}  
