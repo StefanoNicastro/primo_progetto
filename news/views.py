@@ -40,6 +40,12 @@ def articoloDetailView(request, pk):
     context = {"articolo": articolo}
     return render (request, "articolo_detail.html", context)
 
+def giornalistaDetailView(request, pk):
+    giornalista = get_object_or_404(Giornalista, pk=pk)
+    articoli = Articolo.objects.filter(giornalista=pk)
+    context = {"giornalista": giornalista, "articoli": articoli}
+    return render (request, "giornalista_detail.html", context)
+
 def listaArticoli(request, pk=None):
     if(pk==None):
         articoli = Articolo.objects.all()
@@ -49,6 +55,9 @@ def listaArticoli(request, pk=None):
             'articoli': articoli,
         }
     return render(request, "news/lista_articoli.html", context)
+
+def index_news(request):
+    return render(request, "index_news.html")
 
 def query_base(request):
     # 1. Tutti gli articoli scritti da giornalisti di un certo cognome:
@@ -100,6 +109,43 @@ def query_base(request):
     # 15. tutti gli articoli che contengono una certa parola nel titolo:
     articoli_parola = Articolo.objects.filter(titolo__icontains='importante')
 
+    #16 Articoli pubblicati in un certo mese di un anno specifico:
+    #nota per poter modificare la data di un articolo togliere la proprietà auto_now-True al field data nel model
+    #poi dare i comandi makemigrations e migrate per applicare le modifiche al database
+    articoli_mese_anno=Articolo.objects.filter(data__month=1, data__year=2023)
+
+    #17 Giornalisti con almeno un articolo con più di 100 visualizzazioni
+    giornalista_con_articoli_popolari=Giornalista.objects.filter(articoli__visualizzazioni__gte=100).distinct()
+    
+    """spiegazione dettagliata:
+    Giornalista.objects: Inizia dalla classe del modello Giornalista.
+    .filter(articoli_visualizzazioni_gte=100): Utilizza il metodo filter() per filtrare i giornalisti in base al campo visualizzazioni nel modello Articolo. La notazione articoli_visualizzazioni indica che si sta seguendo la relazione inversa dalla classe Giornalista alla classe Articolo attraverso
+    il campo Foreignkey giornalista nel modello Articolo.
+    distinct(): #E' un metodo assicura che i risultati siano distinti, eliminando eventuali duplicati.
+    #In questo caso, ciò è utile perché un giornalista potrebbe essere associato a più articoli che soddisfano
+    #il criterio, e vogliamo ottenere solo una volta ogni giornalista che ha scritto almeno un articolo popolare."""
+    
+    #UTILIZZO DI PIU' CONDIZIONI DI SELEZIONE
+    data=datetime.date(1998, 1, 1)
+    visualizzazioni=50
+
+    # Per mettere in AND le condizioni separarle con la virgola
+    #18...scrivi quali articoli vengono selezionati
+    articoli_con_and =Articolo.objects.filter(giornalista__anno_di_nascita__gt=data, visualizzazioni__gte=visualizzazioni)
+
+    # Per mettere in OR le condizioni utilizzare l'operatore Q
+    from django.db.models import Q
+    #19 ...scrivi quali articoli vengono selezionati
+    articoli_con_or=Articolo.objects.filter(Q(giornalista__anno_di_nascita__gt=data) | Q(visualizzazioni__lte=visualizzazioni))
+
+    #Per 11 NOT (~) utilizzare l'operatore Q
+    #20...scrivi quali articoli vengono selezionati
+    articoli_con_not=Articolo.objects.filter(~Q(giornalista__anno_di_nascita__lt=data))
+
+    #oppure il metodo exclude
+    #... spiegala
+    articoli_con_not=Articolo.objects.exclude(giornalista__anno_di_nascita__lt=data)
+
     # Creare il dizionario context
     context = {
         'articoli_cognome': articoli_cognome,
@@ -120,3 +166,4 @@ def query_base(request):
     }
 
     return render(request, 'query_base.html', context)
+
