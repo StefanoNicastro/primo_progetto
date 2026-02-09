@@ -1,0 +1,16 @@
+{% extends 'base.html'%}
+{%block title%}
+View B
+{%endblock title%}
+{%block content%}
+<h4>Voti</h4>
+<p>Voti studenti:</p>
+
+{% for studente, dati in voti.items %}
+    <p>{{studente}}:</P>
+    {% for elemento in dati.items %}
+        <p>{{elemento.0}}, {{elemento.1}}, {{elemento.2}}</p>
+    {%endfor%}
+{%endfor%}
+
+{%endblock content%}
