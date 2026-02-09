@@ -8,8 +8,8 @@ View B
 
 {% for studente, dati in voti.items %}
     <p>{{studente}}:</P>
-    {% for elemento in dati.items %}
-        <p>{{elemento.0}}, {{elemento.1}}, {{elemento.2}}</p>
+    {% for materia, voto, assenze in dati %}
+        <p>{{materia}}, {{voto}}, {{assenze}}</p>
     {%endfor%}
 {%endfor%}
 
