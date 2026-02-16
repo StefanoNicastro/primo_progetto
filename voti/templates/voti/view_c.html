@@ -1,0 +1,13 @@
+{% extends 'base.html'%}
+{%block title%}
+View C
+{%endblock title%}
+{%block content%}
+<h4>Medie</h4>
+<p>Medie studenti:</p>
+
+{% for studente, media in medie %}
+    <p>{{studente}}: {{media}}</P>
+{%endfor%}
+
+{%endblock content%}

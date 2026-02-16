@@ -38,4 +38,41 @@ def view_c(request):
     return render(request, "view_c.html", context)
 
 
-#def view_d(request):
+def view_d(request):
+    votoMax=0
+    votoMin=1000
+    list_max=[]
+    list_min=[]
+
+    for nome, dati in voti.items():
+        for materia, voto, assenze in dati:
+            if votoMin>voto:
+                votoMin=voto
+            if votoMax<voto:
+                votoMax=voto
+        
+
+    for nome, dati in voti.items():
+        for metaria, voto, assenze in dati:
+
+            if voto==votoMin:
+                list_min.append((nome, materia, voto))
+            
+
+            if voto==votoMax:
+                list_max.append((nome, materia, voto))
+        
+
+
+
+    print(list_min)
+    print(list_max)
+    
+    context={
+        'list_min': list_min,
+        'list_max': list_max
+    }
+    return render(request, "view_d.html", context)
+    
+        
+    
