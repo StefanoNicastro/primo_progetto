@@ -1,0 +1,1 @@
+C:\scuola\tpsi\django\env\Scripts\activate.bat
