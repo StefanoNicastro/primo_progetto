@@ -73,6 +73,9 @@ def view_d(request):
         'list_max': list_max
     }
     return render(request, "view_d.html", context)
+
+def index(request):
+    return render(request, "voti/index.html")
     
         
     

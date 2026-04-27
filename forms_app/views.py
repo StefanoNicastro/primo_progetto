@@ -79,3 +79,6 @@ def elimina_contatto (request, pk):
         return redirect('forms_app:lista-contatti')
     context= {'contatto': contatto}
     return render (request, 'elimina contatto.html',context)
+
+def index(request):
+    return render (request, 'forms_app/index.html')
